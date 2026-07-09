@@ -36,3 +36,9 @@ RUN mkdir -p /comfyui/models/LLM/Qwen-VL/gemma-4-E2B-it && \
 # user-provided inputs override the auto-generated placeholders above.
 RUN wget --progress=dot:giga -O '/comfyui/input/male-model-photography-male-model-portfolio-shoot-in-delhi-noida-gurgaon-gurugram-2_orig.jpg' "https://cool-anteater-319.convex.cloud/api/storage/98bc207e-b9d4-400a-9735-6da7d78dbedc"
 RUN wget --progress=dot:giga -O '/comfyui/input/model.webp' "https://cool-anteater-319.convex.cloud/api/storage/e38c01d9-0326-4a11-a8f8-f0a7440974f4"
+
+# Force Python to dump console output instantly instead of caching/buffering it
+ENV PYTHONUNBUFFERED=1
+
+# Start ComfyUI and dynamically locate and execute your handler file
+CMD ["bash", "-c", "python3 /comfyui/main.py --listen 127.0.0.1 --port 8188 & python3 $(find / -maxdepth 2 -name '*handler.py' | head -n 1)"]
